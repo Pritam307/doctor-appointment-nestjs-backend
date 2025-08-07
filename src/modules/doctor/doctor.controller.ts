@@ -7,7 +7,6 @@ import {
   DefaultValuePipe,
   ParseIntPipe,
   Param,
-  HttpCode,
   HttpStatus,
   Res,
   UseGuards,
