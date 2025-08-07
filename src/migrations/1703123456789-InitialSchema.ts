@@ -1,11 +1,11 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class InitialSchema1703123456789 implements MigrationInterface {
-    name = 'InitialSchema1703123456789'
+  name = 'InitialSchema1703123456789';
 
-    public async up(queryRunner: QueryRunner): Promise<void> {
-        // Create doctor table
-        await queryRunner.query(`
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    // Create doctor table
+    await queryRunner.query(`
             CREATE TABLE "doctor" (
                 "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
                 "name" character varying NOT NULL,
@@ -16,8 +16,8 @@ export class InitialSchema1703123456789 implements MigrationInterface {
             )
         `);
 
-        // Create appointment table
-        await queryRunner.query(`
+    // Create appointment table
+    await queryRunner.query(`
             CREATE TABLE "appointment" (
                 "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
                 "patientName" character varying NOT NULL,
@@ -29,13 +29,13 @@ export class InitialSchema1703123456789 implements MigrationInterface {
             )
         `);
 
-        // Create index for doctorId to speed up overlap checks
-        await queryRunner.query(`
+    // Create index for doctorId to speed up overlap checks
+    await queryRunner.query(`
             CREATE INDEX "IDX_appointment_doctorId" ON "appointment" ("doctorId")
         `);
 
-        // Create foreign key constraint
-        await queryRunner.query(`
+    // Create foreign key constraint
+    await queryRunner.query(`
             ALTER TABLE "appointment" 
             ADD CONSTRAINT "FK_appointment_doctor" 
             FOREIGN KEY ("doctorId") 
@@ -44,28 +44,30 @@ export class InitialSchema1703123456789 implements MigrationInterface {
             ON UPDATE NO ACTION
         `);
 
-        // Create index for startTime and endTime for efficient overlap queries
-        await queryRunner.query(`
+    // Create index for startTime and endTime for efficient overlap queries
+    await queryRunner.query(`
             CREATE INDEX "IDX_appointment_times" ON "appointment" ("startTime", "endTime")
         `);
 
-        // Create index for doctorId + date range queries
-        await queryRunner.query(`
+    // Create index for doctorId + date range queries
+    await queryRunner.query(`
             CREATE INDEX "IDX_appointment_doctor_date" ON "appointment" ("doctorId", "startTime")
         `);
-    }
+  }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-        // Drop foreign key constraint
-        await queryRunner.query(`ALTER TABLE "appointment" DROP CONSTRAINT "FK_appointment_doctor"`);
-        
-        // Drop indexes
-        await queryRunner.query(`DROP INDEX "IDX_appointment_doctor_date"`);
-        await queryRunner.query(`DROP INDEX "IDX_appointment_times"`);
-        await queryRunner.query(`DROP INDEX "IDX_appointment_doctorId"`);
-        
-        // Drop tables
-        await queryRunner.query(`DROP TABLE "appointment"`);
-        await queryRunner.query(`DROP TABLE "doctor"`);
-    }
-} 
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    // Drop foreign key constraint
+    await queryRunner.query(
+      `ALTER TABLE "appointment" DROP CONSTRAINT "FK_appointment_doctor"`,
+    );
+
+    // Drop indexes
+    await queryRunner.query(`DROP INDEX "IDX_appointment_doctor_date"`);
+    await queryRunner.query(`DROP INDEX "IDX_appointment_times"`);
+    await queryRunner.query(`DROP INDEX "IDX_appointment_doctorId"`);
+
+    // Drop tables
+    await queryRunner.query(`DROP TABLE "appointment"`);
+    await queryRunner.query(`DROP TABLE "doctor"`);
+  }
+}

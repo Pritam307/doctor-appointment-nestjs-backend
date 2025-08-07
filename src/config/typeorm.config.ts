@@ -13,4 +13,4 @@ export default new DataSource({
   migrations: ['src/migrations/*.ts'],
   synchronize: false, // Always false for migrations
   logging: process.env.NODE_ENV === 'development',
-}); 
+});

@@ -6,11 +6,14 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }));
+  app.useGlobalPipes(
+    new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
+  );
 
   const config = new DocumentBuilder()
     .setTitle('Doctor Appointment Booking API')
-    .setDescription(`
+    .setDescription(
+      `
       A comprehensive API for managing doctor appointments and scheduling.
       
       ## Authentication
@@ -28,7 +31,8 @@ async function bootstrap() {
       ## Public Endpoints
       - POST /auth/login - Login to get token
       - POST /doctor - Register new doctor
-    `)
+    `,
+    )
     .setVersion('1.0')
     .addBearerAuth(
       {
@@ -44,7 +48,6 @@ async function bootstrap() {
     .build();
   const doc = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, doc);
-
 
   await app.listen(process.env.PORT || 3000);
 }

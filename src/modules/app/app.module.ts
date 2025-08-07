@@ -38,6 +38,6 @@ import { DoctorModule } from '../doctor/doctor.module';
     DoctorModule,
   ],
   controllers: [AppController],
-  providers: [JwtStrategy,AppService],
+  providers: [JwtStrategy, AppService],
 })
 export class AppModule {}

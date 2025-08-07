@@ -5,9 +5,7 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(
-    config: ConfigService,
-  ) {
+  constructor(config: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: config.get<string>('JWT_SECRET')!,
@@ -18,8 +16,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: any) {
     // Application-level validation: ensure user still exists and is active
     return {
-        userId: payload.sub,
-        username: payload.username,
-    }
+      userId: payload.sub,
+      username: payload.username,
+    };
   }
 }
