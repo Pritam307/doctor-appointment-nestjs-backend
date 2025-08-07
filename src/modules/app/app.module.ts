@@ -4,12 +4,12 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Doctor } from 'src/entities/doctor.entity';
-import { Appointment } from 'src/entities/appointment.entity';
+import { Appointment } from '../../entities/appointment.entity';
 import { AppointmentModule } from '../appointment/appointment.module';
 import { JwtStrategy } from '../auth/jwt.strategy';
 import { AuthModule } from '../auth/auth.module';
 import { DoctorModule } from '../doctor/doctor.module';
+import { Doctor } from '../../entities/doctor.entity';
 
 @Module({
   imports: [
