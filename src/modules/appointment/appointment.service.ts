@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Appointment } from 'src/entities/appointment.entity';
+import { Appointment } from '../../entities/appointment.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Doctor } from 'src/entities/doctor.entity';
-import { BookAppointmentDto } from 'src/dto/book-appointment.dto';
+import { Doctor } from '../../entities/doctor.entity';
+import { BookAppointmentDto } from '../../dto/book-appointment.dto';
 @Injectable()
 export class AppointmentService {
   constructor(
