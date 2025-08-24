@@ -32,15 +32,15 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.ORACLE_SERVER_IP }} << 'EOF'
           # Navigate to the project directory
-          cd /home/ubuntu/apps/doctor-appointment-app
+          cd /home/ubuntu/apps/doctor-appointment-nestjs-backend
 
           # Pull the latest changes from the main branch
           git pull origin master
 
           # Build the Docker image
-          docker-compose build
+          docker compose build
 
           # Restart the Docker Compose services
-          docker-compose down
-          docker-compose up -d
+          docker compose down
+          docker compose up -d
         EOF
