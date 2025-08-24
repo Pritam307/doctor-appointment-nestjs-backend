@@ -34,10 +34,10 @@ services:
     ports:
       - "3000:3000"
     environment:
-      NODE_ENV: development
-      DATABASE_URL: postgresql://postgres:password@postgres:5432/appointments
-      JWT_SECRET: your-super-secret-jwt-key-here
-      JWT_EXPIRES_IN: 1h
+      NODE_ENV: ${NODE_ENV}
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
       PORT: 3000
     depends_on:
       postgres:

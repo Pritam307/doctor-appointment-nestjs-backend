@@ -24,6 +24,11 @@ jobs:
 
     # Step 3: Deploy to Oracle Cloud Server
     - name: Deploy to Oracle Cloud Server
+      env:
+        NODE_ENV: production
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        JWT_EXPIRES_IN: ${{ secrets.JWT_EXPIRES_IN }}
       run: |
         ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.ORACLE_SERVER_IP }} << 'EOF'
           # Navigate to the project directory
