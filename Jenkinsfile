@@ -22,6 +22,7 @@ pipeline {
         DOCKER_TAG = "latest"              // could also use GIT_COMMIT for versioning
         DATABASE_URL = credentials('DATABASE_URL')
         JWT_SECRET   = credentials('JWT_SECRET')
+        JWT_EXPIRES_IN   = credentials('JWT_EXPIRES_IN')
     }
 
     stages {
@@ -66,6 +67,7 @@ pipeline {
                         docker compose -f docker-compose.yml build
                         export JWT_SECRET=$JWT_SECRET
                         export DATABSAE_URL=$DATABASE_URL
+                        export JWT_EXPIRES_IN=$JWT_EXPIRES_IN
                         docker compose -f docker-compose.yml up -d
                     """
                 }
