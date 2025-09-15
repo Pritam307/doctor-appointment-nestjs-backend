@@ -38,7 +38,8 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh 'npm install -g @nestjs/cli'
-                sh 'npm install'
+                sh 'rm -rf node_modules package-lock.json'
+                sh 'npm install --unsafe-perm=true --no-audit --no-fund'
             }
         }
 
