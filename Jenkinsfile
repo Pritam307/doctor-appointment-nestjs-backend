@@ -20,6 +20,8 @@ pipeline {
     environment {
         DOCKER_IMAGE = "doctor-appointment-app"     // change to your app name
         DOCKER_TAG = "latest"              // could also use GIT_COMMIT for versioning
+        DATABASE_URL = credentials('DATABASE_URL')
+        JWT_SECRET   = credentials('JWT_SECRET')
     }
 
     stages {
@@ -59,9 +61,6 @@ pipeline {
             steps {
                 script {
                     sh "docker build -t $DOCKER_IMAGE:$DOCKER_TAG ."
-                    // Optional: push to Docker Hub / private registry
-                    // sh "docker login -u $DOCKER_USER -p $DOCKER_PASS"
-                    // sh "docker push $DOCKER_IMAGE:$DOCKER_TAG"
                 }
             }
         }
@@ -72,7 +71,10 @@ pipeline {
                     // Stop and remove old container if exists
                     sh """
                         docker rm -f nestjs-container || true
-                        docker run -d --name nestjs-container -p 3000:3000 $DOCKER_IMAGE:$DOCKER_TAG
+                        docker run -d --name nestjs-container -p 3000:3000\
+                        -e DATABASE_URL=$DATABASE_URL \
+                        -e JWT_SECRET=$JWT_SECRET \
+                         $DOCKER_IMAGE:$DOCKER_TAG
                     """
                 }
             }
