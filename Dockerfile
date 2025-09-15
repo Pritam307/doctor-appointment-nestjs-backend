@@ -1,16 +1,22 @@
-# Step 1: Build stage
-FROM node:18-alpine AS builder
+FROM node:18-alpine
+
 WORKDIR /app
-RUN npm install -g @nestjs/cli
+
 COPY package*.json ./
+
+# Install all dependencies including dev (needed for build)
 RUN npm install
+
+# Copy source
 COPY . .
+
+# Build
 RUN npm run build
 
-# Step 2: Production stage
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm install --only=production
-COPY --from=builder /app/dist ./dist
-CMD ["node", "dist/main.js"]
+# Remove dev deps (optional cleanup)
+RUN npm prune --production
+
+EXPOSE 3000
+
+CMD ["npm", "run", "start:prod"]
+
