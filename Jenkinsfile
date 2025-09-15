@@ -1,11 +1,17 @@
 pipeline {
-      agent {
-        docker {
-            image 'node:18-alpine' // Use Node.js 18 Alpine image
-            args '-u root:root' // so npm can install without permission issues
-        }
-    }
+    // agent {
+    //     docker {
+    //         image 'node:18-alpine' // Use Node.js 18 Alpine image
+    //         args '-u root:root' // so npm can install without permission issues
+    //     }
+    // }
 
+    agent any
+
+
+    tools {
+        nodejs "NodeJS-18"  // name you configured in Jenkins tools
+    }
     environment {
         DOCKER_IMAGE = "doctor-appointment-app"     // change to your app name
         DOCKER_TAG = "latest"              // could also use GIT_COMMIT for versioning
