@@ -2,20 +2,26 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Install dependencies for development
-RUN apk add --no-cache git
+#install nest globally
+RUN npm install -g @nestjs/cli
 
 # Copy package files
 COPY package*.json ./
 
-# Install all dependencies (including dev dependencies)
+# Install all dependencies (including dev dependencies for building)
 RUN npm install
 
 # Copy source code
 COPY . .
 
+# Build the application
+RUN npm run build
+
+# Remove dev dependencies and node_modules
+RUN npm prune --omit=dev
+
 # Expose port
 EXPOSE 3000
 
-# Start development server with hot reload
-CMD ["npm", "run", "start:dev"] 
+# Start the application
+CMD ["npm", "run", "start:prod"] 

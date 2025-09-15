@@ -1,0 +1,64 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE = "doctor-appointment-app"     // change to your app name
+        DOCKER_TAG = "latest"              // could also use GIT_COMMIT for versioning
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'master', url: 'https://github.com/Pritam307/doctor-appointment-nestjs-backend.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+                sh 'npm install -g @nestjs/cli'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'npm run test'
+            }
+        }
+
+        stage('Docker Build & Push') {
+            steps {
+                script {
+                    sh "docker build -t $DOCKER_IMAGE:$DOCKER_TAG ."
+                    // Optional: push to Docker Hub / private registry
+                    // sh "docker login -u $DOCKER_USER -p $DOCKER_PASS"
+                    // sh "docker push $DOCKER_IMAGE:$DOCKER_TAG"
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    // Stop and remove old container if exists
+                    sh """
+                        docker rm -f nestjs-container || true
+                        docker run -d --name nestjs-container -p 3000:3000 $DOCKER_IMAGE:$DOCKER_TAG
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline finished.'
+        }
+    }
+}

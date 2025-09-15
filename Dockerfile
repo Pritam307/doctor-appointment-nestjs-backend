@@ -1,27 +1,16 @@
-FROM node:18-alpine
-
+# Step 1: Build stage
+FROM node:18-alpine AS builder
 WORKDIR /app
-
-#install nest globally
 RUN npm install -g @nestjs/cli
-
-# Copy package files
 COPY package*.json ./
-
-# Install all dependencies (including dev dependencies for building)
 RUN npm install
-
-# Copy source code
 COPY . .
-
-# Build the application
 RUN npm run build
 
-# Remove dev dependencies and node_modules
-RUN npm prune --omit=dev
-
-# Expose port
-EXPOSE 3000
-
-# Start the application
-CMD ["npm", "run", "start:prod"] 
+# Step 2: Production stage
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install --only=production
+COPY --from=builder /app/dist ./dist
+CMD ["node", "dist/main.js"]
