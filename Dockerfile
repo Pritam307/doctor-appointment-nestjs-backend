@@ -2,6 +2,9 @@ FROM node:18-alpine
 
 WORKDIR /app
 
+#install nest globally
+RUN npm install -g @nestjs/cli
+
 # Copy package files
 COPY package*.json ./
 
