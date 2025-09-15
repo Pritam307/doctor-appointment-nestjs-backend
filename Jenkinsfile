@@ -57,24 +57,16 @@ pipeline {
             }
         }
 
-        stage('Docker Build & Push') {
-            steps {
-                script {
-                    sh "docker build -t $DOCKER_IMAGE:$DOCKER_TAG ."
-                }
-            }
-        }
 
-        stage('Deploy') {
+        stage('Docker build & Deploy') {
             steps {
                 script {
-                    // Stop and remove old container if exists
                     sh """
-                        docker rm -f nestjs-container || true
-                        docker run -d --name nestjs-container -p 3000:3000\
-                        -e DATABASE_URL=$DATABASE_URL \
-                        -e JWT_SECRET=$JWT_SECRET \
-                         $DOCKER_IMAGE:$DOCKER_TAG
+                        docker compose -f docker-compose.yml down || true
+                        docker compose -f docker-compose.yml build
+                        export JWT_SECRET=$JWT_SECRET
+                        export DATABSAE_URL=$DATABASE_URL
+                        docker compose -f docker-compose.yml up -d
                     """
                 }
             }
