@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   # PostgreSQL Database
-  postgres:
+  db:
     image: postgres:15-alpine
     container_name: doctor-appointment-db
     restart: unless-stopped
@@ -37,7 +37,7 @@ services:
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
       PORT: 3000
     depends_on:
-      postgres:
+      db:
         condition: service_healthy
     networks:
       - app-network
