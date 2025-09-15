@@ -8,6 +8,11 @@ pipeline {
 
     agent any
 
+    options {
+        disableConcurrentBuilds()
+        skipDefaultCheckout()
+    }
+
 
     tools {
         nodejs "NODEJS-18.20"  // name you configured in Jenkins tools
@@ -18,6 +23,12 @@ pipeline {
     }
 
     stages {
+
+        stage('Clean Workspace') {
+            steps {
+                deleteDir()
+            }
+        }
         stage('Checkout') {
             steps {
                 git branch: 'master', url: 'https://github.com/Pritam307/doctor-appointment-nestjs-backend.git'
