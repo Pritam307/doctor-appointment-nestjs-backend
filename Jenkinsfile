@@ -10,7 +10,7 @@ pipeline {
 
 
     tools {
-        nodejs "NodeJS-18"  // name you configured in Jenkins tools
+        nodejs "NODEJS-18"  // name you configured in Jenkins tools
     }
     environment {
         DOCKER_IMAGE = "doctor-appointment-app"     // change to your app name
