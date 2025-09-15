@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:18-alpine' // Use Node.js 18 Alpine image
-            args '-u root:root' // so npm can install without permission issues
-        }
-    }
+    agent any
 
     // options {
     //     disableConcurrentBuilds()
@@ -36,25 +31,22 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Install Dependencies & buid & test') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    args '-u root:root'
+                }
+            }
             steps {
                 sh 'npm install -g @nestjs/cli'
                 sh 'rm -rf node_modules package-lock.json'
                 sh 'npm install'
-            }
-        }
-
-        stage('Build') {
-            steps {
                 sh 'npm run build'
-            }
-        }
-
-        stage('Test') {
-            steps {
                 sh 'npm run test'
             }
         }
+
 
 
         stage('Docker build & Deploy') {
