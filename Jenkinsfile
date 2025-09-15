@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+      agent {
+        docker {
+            image 'node:18-alpine' // Use Node.js 18 Alpine image
+            args '-u root:root' // so npm can install without permission issues
+        }
+    }
 
     environment {
         DOCKER_IMAGE = "doctor-appointment-app"     // change to your app name
@@ -15,8 +20,8 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
                 sh 'npm install -g @nestjs/cli'
+                sh 'npm install'
             }
         }
 
