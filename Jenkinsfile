@@ -1,15 +1,6 @@
 pipeline {
     agent any
 
-    // options {
-    //     disableConcurrentBuilds()
-    //     skipDefaultCheckout()
-    // }
-
-
-    // tools {
-    //     nodejs "NODEJS-18.20"  // name you configured in Jenkins tools
-    // }
     environment {
         DOCKER_IMAGE = "doctor-appointment-app"     // change to your app name
         DOCKER_TAG = "latest"              // could also use GIT_COMMIT for versioning
