@@ -11,11 +11,7 @@ pipeline {
 
     stages {
 
-        // stage('Clean Workspace') {
-        //     steps {
-        //         deleteDir()
-        //     }
-        // }
+    
         stage('Checkout') {
             steps {
                 git branch: 'master', url: 'https://github.com/Pritam307/doctor-appointment-nestjs-backend.git'
