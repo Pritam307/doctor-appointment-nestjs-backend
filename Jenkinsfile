@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "doctor-appointment-app"     // change to your app name
+        DOCKER_IMAGE = "doctor-appointment-app"   
         DOCKER_TAG = "latest"              // could also use GIT_COMMIT for versioning
         DATABASE_URL = credentials('DATABASE_URL')
         JWT_SECRET   = credentials('JWT_SECRET')
