@@ -10,7 +10,6 @@ pipeline {
     }
 
     stages {
-
     
         stage('Checkout') {
             steps {
@@ -33,8 +32,6 @@ pipeline {
                 sh 'npm run test'
             }
         }
-
-
 
         stage('Docker build & Deploy') {
             steps {
